@@ -8,10 +8,20 @@ body {
 .menu {
     background-color:aliceblue;
     border-width: 1px;
-    margin-left: 20px;
-    border-style: solid;
-    height: 500px;
-    width: 200px;
+    border-style: none;
+    height: max-content;
+    width: max-content;
+    -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+}
+
+.menu-content {
+    background-color:aliceblue;
+    border-style: none;
+    height: max-content;
+    width: 300px;
+    z-index: 1;
     -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
@@ -21,17 +31,70 @@ body {
     opacity: 0.5;
 }
 
+@keyframes collapse {
+    0% { opacity: 0; transform: translateY(-30%); }
+    100% { opacity: 1; transform:  translateY(0%); }
+}
+
+.collapse-enter-active {
+    animation: collapse 0.2s;
+}
+
+.collapse-leave-active {
+    animation: collapse 0.2s reverse;
+}
+
 .nav-bar {
+    z-index: 99;
     display: flex;  
     justify-content: space-between;
     align-items: center;
     background: linear-gradient(-90deg, #006680ff, #222222);
     color: whitesmoke;
     height: 60px;
-    margin-bottom: 20px;
     -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+}
+
+.nav-button {
+    width: fit-content;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: 10px;
+    border-radius: 50%;
+    z-index: 9999;
+}
+
+.nav-menu {
+    z-index: 999;
+    background: linear-gradient(90deg, #006680ff, #333333);
+    display: flex;  
+    justify-content: space-between;
+    align-items: center;
+    color: whitesmoke;
+    height: 60px;
+    width: 300px;
+    -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+}
+
+.menu-item {
+    background: linear-gradient(90deg, #006680ff, #333333);
+    color: white;
+    z-index: 9;
+    width: 300px;
+    display: flex;  
+    height: 40px;
+    -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+}
+
+.menu-item:hover {
+    background: linear-gradient(90deg, #006680ff, #222222);
+    font-style: italic;
 }
 
 .logo {

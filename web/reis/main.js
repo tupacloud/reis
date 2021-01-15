@@ -12,8 +12,8 @@ const app = Vue.createApp({
         mouseMoveHandler(event) {
             if (this.isMovingMenu) {
                 if (event.clientX < window.innerWidth - 115 && event.clientX > 100 ) {
-                this.menu_left = event.clientX - 90;
-                this.menu_top = event.clientY - 90;
+                    this.menu_left = event.screenX - 95;
+                    this.menu_top = event.screenY - 95;
                 }
             }
         },
