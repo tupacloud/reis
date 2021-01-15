@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+
+    <title>REIS | Reservatórios Inteligentes</title>
+
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="dashboard" @mouseup="mouseUpHandler" @mousemove="mouseMoveHandler">
+            <div class="nav-bar">
+
+                <p>Bem vindo de volta ao sistema, {{ user }}.</p>
+                <p class="info"> {{ nivel }} </p>
+
+            </div>
+
+            <menu-display :class="{ 'menu-moving' : isMovingMenu }" @move-menu="moveElement" :left="menu_left" :top="menu_top"></menu-display>
+        </div>
+    </div>
+
+    <!-- Import App -->
+    <script src="./main.js"></script>
+
+    <!-- Import Components -->
+    <script src="./components/MenuDisplay.js"></script>
+    <script src="./components/MenuContent.js"></script>
+
+    <!-- Mount App -->
+    <script>
+        const mountedApp = app.mount('#app')
+    </script>
+
+</body>
+
+</html>

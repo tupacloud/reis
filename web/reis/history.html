@@ -1,0 +1,105 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>REIS | Histórico de uso</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha256-t9UJPrESBeG2ojKTIcFLPGF7nHi2vEc7f5A2KpH/UBU=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        html,
+        body,
+        .app {
+            background-image: linear-gradient(#cbebf3, rgb(240, 240, 240));
+	        background-repeat:no-repeat;
+            background-color: rgb(240, 240, 240);
+            height: 99%;
+            color: black;
+        }
+
+        .app {
+            display: flex;
+        }
+
+        .menu {
+            background-color: rgb(184, 236, 253);
+            flex: 20%;
+
+
+        }
+
+        .content {
+            flex: 80%;
+
+            display: -webkit-flexbox;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+
+            -webkit-flex-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+</head>
+
+<body onload="start();">
+
+    <div class="app">
+
+        <div class="menu">
+            <center>
+                <p>Bem vindo ao sistema REIS.</p>
+
+                <br>
+
+                <img width="50%" src="imgs/under_construction.gif"></img>
+
+                <br>
+                Plataforma em desenvolvimento.
+
+                <br><br>
+                <hr/>
+
+                <b>Tipo de gráfico</b><br><br>
+                <button onclick="changeChartTo('bar')">Barras</button><br>
+                <button onclick="changeChartTo('radar')">Radar</button><br>
+                <button onclick="changeChartTo('line')">Linhas</button>
+
+                <hr/>
+                <b>Filtrar por</b><br><br>
+                <button onclick="updateScale('none')">Sem filtro</button><br>
+                <button onclick="updateScale('day')">Dia</button><br>
+                <button onclick="updateScale('month')">Mês</button><br>
+                <button onclick="updateScale('year')">Ano</button>
+
+            </center>
+        </div>
+
+
+        <div class="content">
+
+            <center>
+
+                <div id='loader'><img src="loaders/gear3.svg" /></div>
+
+                <canvas id="chart" width="800" height="600"></canvas>
+
+
+            </center>
+
+
+        </div>
+
+
+        <script src="js/app.js"></script>
+
+
+</body>
+
+</html>
