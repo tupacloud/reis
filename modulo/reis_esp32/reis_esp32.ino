@@ -5,6 +5,14 @@ void setup() {
 
   Serial.begin(115200);
 
+  setEEPROM();
+  //resetModuleToFactory();
+  /**/
+  if( !checkDeviceEEPROM(uniqueDeviceCode) ){
+    initDeviceInServer(uniqueDeviceCode);
+  }
+  /**/
+
   xTaskCreatePinnedToCore(
                     loopCoreZero,   /* função que implementa a tarefa */
                     "loopCoreZero",  /* nome da tarefa */

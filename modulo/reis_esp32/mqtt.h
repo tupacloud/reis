@@ -1,26 +1,13 @@
 
 // MYQTTHUB
 
-// https://pas.aspl.es/
-// jabuttiot (rrleme@gmail.com) Password: ElGhM9
-
-// https://myqtthub.com/en/
-
 #define MQTT_BROKER       "node02.myqtthub.com"
 #define MQTT_BROKER_PORT  8883
-#define MQTT_USERNAME     "moduleReis"
+#define MQTT_USERNAME     "moduleREIS"
 #define MQTT_KEY          "negulosocarente"
 #define MQTT_CLIENT       "id_1312"
 
 char SUBSCRIBE[100];
-
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// Esse passo precisa ser automatizado - ex WiFiManager
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-const char* ssid = "Tenebrios";
-const char* password = "r4r4l4lv";
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
