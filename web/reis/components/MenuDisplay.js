@@ -15,7 +15,7 @@ app.component('menu-display', {
     
     <div 
         ref="menu"
-        class="menu" 
+        class="menu noselect" 
         :style="{ width: size_w + 'px', height: size_h + 'px', 'margin-left': left + 'px', 'margin-top' : top + 'px' }"
         >
 
@@ -49,8 +49,8 @@ app.component('menu-display', {
     },
     methods: {
         eventHandler(option) {
-            console.log(option)
             this.menu_mode = option
+            this.$emit('change-view', option)
         },
         expand() {
             this.collapsed = false
@@ -59,8 +59,12 @@ app.component('menu-display', {
             this.collapsed = true
         },
         getPosition(event) {
-            this.$emit('move-menu', event)
-            console.log(this.$refs.menu.clientHeight);
+            let info = {
+                event: event,
+                object: this.$refs.menu
+            }
+
+            this.$emit('move-menu', info)
         },
         resize(type) {
             if (type == 'increase') {

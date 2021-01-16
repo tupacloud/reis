@@ -5,12 +5,46 @@ body {
     color:black;
 }
 
+.dashboard {
+    z-index: 1;
+    position: absolute;
+    margin-top: 80px;
+    margin-left: 20px;
+    width: Calc(100vw - 40px);
+    height: Calc(100vh - 100px);
+    background-color: white;
+    -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+}
+
+.main {
+    position:fixed;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: space-between;
+
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+  }
+
 .menu {
+    position: absolute;
     background-color:aliceblue;
     border-width: 1px;
     border-style: none;
     height: max-content;
     width: max-content;
+    z-index: 99999999;
     -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
@@ -28,7 +62,26 @@ body {
 }
 
 .menu-moving {
+    z-index: 999999;
     opacity: 0.5;
+}
+
+@keyframes changeview {
+    0% { opacity: 0; transform: translateX(30%); }
+    100% { opacity: 1; transform:  translateX(0%); }
+}
+
+.changeview-enter-active {
+    animation: changeview 0.2s;
+}
+
+.fade-enter-active {
+    animation: fade 1s linear;
+}
+
+@keyframes fade {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
 }
 
 @keyframes collapse {
@@ -52,6 +105,7 @@ body {
     background: linear-gradient(-90deg, #006680ff, #222222);
     color: whitesmoke;
     height: 60px;
+    width: 100%;
     -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);

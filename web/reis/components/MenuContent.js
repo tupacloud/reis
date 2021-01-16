@@ -2,12 +2,12 @@ app.component('menu-content', {
     template:
     /*html*/
     `
-        <div class="menu-item">
+        <div class="menu-item" v-on:click="clickEvent('main')">
             <i style="margin: 10px" class="fa fa-home"></i>
             <p style="margin: 10px">Página inicial</p>
         </div>
         <div class="menu-item">
-            <i style="margin: 10px" class="fa fa-water"></i>
+                <i style="margin: 10px" class="fa fa-water"></i>
             <p style="margin: 10px">Nível atual</p>
         </div>
         <div class="menu-item" v-on:click="clickEvent('history')">
@@ -32,7 +32,6 @@ app.component('menu-content', {
     methods: {
         clickEvent(item) {
             this.$emit('menu-click', item)
-            console.log('uiuiui');
         }
     }
 })
