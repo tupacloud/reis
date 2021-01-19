@@ -9,9 +9,12 @@ void setup() {
   //resetModuleToFactory();
   /**/
   if( !checkDeviceEEPROM(uniqueDeviceCode) ){
-    initDeviceInServer(uniqueDeviceCode);
+    initDefaultDevice(uniqueDeviceCode);
   }
   /**/
+
+  setMqtt();
+  initModule();
 
   xTaskCreatePinnedToCore(
                     loopCoreZero,   /* função que implementa a tarefa */

@@ -9,6 +9,12 @@ const char* ssid = "Tenebrios";
 const char* password = "r4r4l4lv";
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
+int Recuo; // centímetros
+int Hmax; // centímetros
+int MeasureDelay; // minutos (tempo/delay para enviar medidas para o servidor)
+int *Notf; // porcentagem
+int NotfSize;
+
 #include <ArduinoJson.h>
 
 #include <esp_task_wdt.h>

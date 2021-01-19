@@ -4,6 +4,33 @@ long timeGetConf = - getConfDelay;
 
 void handleGetMyConf();
 void getMyConf();
+void initModule();
+
+void initModule(){
+
+  Recuo = readRecuo();
+  Hmax = readHmax();
+  MeasureDelay = readMeasureDelay();
+
+  NotfSize = readNotfSize();
+
+  if(Notf!=NULL)
+  free(Notf);
+  Notf = (int*) calloc(NotfSize,sizeof(int));
+
+  int notf[11];
+  readNotf(notf);
+
+  int count = 0;
+  for(int i=0; i<11; i++){
+
+    if( notf[i] == 1 ){
+
+      Notf[count] = i * 10;
+      count ++;
+    }
+  }
+}
 
 void handleGetMyConf(){
 
