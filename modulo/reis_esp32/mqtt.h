@@ -12,47 +12,36 @@ char SUBSCRIBE[100];
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
-#include <ArduinoJson.h>
 
 WiFiClientSecure wifiClient;
 PubSubClient client(wifiClient);
 
 void setMqtt();
-void connectWiFi();
 void connectMQTT();
 void callback_MQTT(char* topic, byte* payload, unsigned int length);
+void handleMqttPayload(String payload);
+
+void handleMqttPayload(String payload){
+
+  String payload_ = payload;
+  
+  StaticJsonBuffer<2000> jsonBuffer;
+  JsonObject& root = jsonBuffer.parseObject(payload_);
+  
+  if(root.containsKey("own")){
+    
+    setOwn(root);  
+  }
+
+  jsonBuffer.clear();
+}
 
 void setMqtt(){
 
   strcpy(SUBSCRIBE,uniqueDeviceCode.c_str());
 
-  connectWiFi();
+  connectWiFi((char *)ssid,(char *)password);
   connectMQTT();
-}
-
-void connectWiFi(){
-  if (WiFi.status() == WL_CONNECTED) {
-     return;
-  }
-        
-  Serial.println("Conectando-se na rede: " + String(ssid) + " - Aguarde!");
-  WiFi.begin(ssid, password); // Conecta na rede WI-FI
-
-  int ResetTime = 10000;
-  long time1 = millis();
-  long time2;
-  while (WiFi.status() != WL_CONNECTED) {
-      delay(100);
-      Serial.print(".");
-      time2 = millis();
-      if(time2-time1>ResetTime){
-        ESP.restart();
-      }
-  }
-  
-  Serial.println();
-  Serial.println(String(ssid) + " - Conexão estabelecida - Ip: " + String(WiFi.localIP()));
-  Serial.println();
 }
 
 void connectMQTT(){
@@ -96,8 +85,8 @@ void callback_MQTT(char* topic, byte* payload, unsigned int length){
 
   if( strcmp(topic,SUBSCRIBE)==0){
     
-    //String pay = payloadStr;
-    //handleMqttPayload(payloadStr);    
+    String pay = payloadStr;
+    handleMqttPayload(payloadStr);    
   }
 
 }

@@ -20,6 +20,23 @@ void writeString(int _add,String data);
 void resetModuleToFactory();
 void handleCommit();
 void initDeviceInServer(String uniqueCode);
+String getClientID();
+
+void setConf(JsonObject& root){
+  
+}
+
+void setOwn(JsonObject& root){
+
+  String clientID  = root["own"];
+  String clientID_ = getClientID();
+
+  if( !clientID.equals(clientID_) ){
+
+    writeString(CLIENT_ID_POSITION,clientID);
+  }
+
+}
 
 void commitEEPROM(){
   
@@ -45,7 +62,8 @@ boolean checkDeviceEEPROM(String uniqueCode){
   if(!strcmp(signature,beetle)==0){
     
     writeString(0,beetle);
-    //writeString(DEVICE_ID_POSITION,uniqueCode);   
+    //writeString(DEVICE_ID_POSITION,uniqueCode);
+    writeString(CLIENT_ID_POSITION,nullClientID);
     
   }else{
     taok = true;
@@ -68,6 +86,26 @@ void writeString(int _add,String data){
   }
   EEPROM.write(_add+_size,'\0');   //Add termination null character for String Data
   EEPROM.commit();
+}
+
+String getClientID(){
+  
+  int i;
+  char data[20];
+  int len=0;
+  
+  unsigned char k;
+  k=EEPROM.read(CLIENT_ID_POSITION);
+  
+  while(k != '\0' && len<20){
+        
+    k=EEPROM.read(CLIENT_ID_POSITION+len);
+    data[len]=k;
+    len++;
+  }
+  
+  data[len]='\0';
+  return String(data);
 }
 
 void resetModuleToFactory(){

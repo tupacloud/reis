@@ -31,8 +31,9 @@ void loop() {
 void loopCoreZero(void * pvParameters ){
   
   while(true){
-    
-    delay(1);
+
+    handleHttpRequest();
+    handleGetMyConf();
   }
   
 }
