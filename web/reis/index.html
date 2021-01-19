@@ -17,7 +17,9 @@
 
 <body>
     <div id="app">
-        <div class="dashboard" @mouseup="mouseUpHandler" @mousemove="mouseMoveHandler">
+
+        
+        <div ref="main" class="main" @mouseup="mouseUpHandler" @mousemove="mouseMoveHandler">
             <div class="nav-bar">
 
                 <p>Bem vindo de volta ao sistema, {{ user }}.</p>
@@ -25,8 +27,21 @@
 
             </div>
 
-            <menu-display :class="{ 'menu-moving' : isMovingMenu }" @move-menu="moveElement" :left="menu_left" :top="menu_top"></menu-display>
+            
+            <menu-display
+                @change-view="changeView" 
+                :class="{ 'menu-moving' : isMovingMenu }" 
+                @move-menu="moveElement" 
+                :left="menu_left" 
+                :top="menu_top">
+            </menu-display>
+            
+
+            <dashboard-display :view="dash_view"></dashboard-display>
+             
         </div>
+
+
     </div>
 
     <!-- Import App -->
@@ -36,6 +51,9 @@
     <script src="./components/MenuDisplay.js"></script>
     <script src="./components/MenuContent.js"></script>
     <script src="./components/MenuHistoryContent.js"></script>
+    <script src="./components/DashboardDisplay.js"></script>
+    <script src="./components/HistoryDisplay.js"></script>
+    <script src="./components/MainDisplay.js"></script>
 
     <!-- Mount App -->
     <script>

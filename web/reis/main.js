@@ -2,18 +2,24 @@ const app = Vue.createApp({
     data() {
         return {
             user: 'Renato',
-            menu_left: 20,
-            menu_top: 0,
+            menu_left: window.innerWidth - 330,
+            menu_top: 150,
+            menu_w: 0,
+            menu_h: 0,
             nivel: '90%',
-            isMovingMenu: false
+            isMovingMenu: false,
+            dash_view: 'main'
         }
     },
     methods: {
+        changeView(option) {
+            this.dash_view = option
+        },
         mouseMoveHandler(event) {
             if (this.isMovingMenu) {
                 if (event.clientX < window.innerWidth - 115 && event.clientX > 100 ) {
-                    this.menu_left = event.screenX - 95;
-                    this.menu_top = event.screenY - 95;
+                    this.menu_left = event.clientX - this.menu_w/2;
+                    this.menu_top = event.clientY - this.menu_h/2;
                 }
             }
         },
@@ -22,9 +28,13 @@ const app = Vue.createApp({
                 this.isMovingMenu = false;  
             }
         },
-        moveElement(event) {
+        moveElement(info) {
             this.isMovingMenu = true;
-            console.log(event.clientX);
+            this.menu_w = info.object.clientWidth;
+            this.menu_h = info.object.clientHeight;
         },
+    },
+    computed: {
+        
     }
 })
