@@ -13,8 +13,8 @@ void setup() {
   }
   /**/
 
-  setMqtt();
   initModule();
+  setMqtt();
 
   xTaskCreatePinnedToCore(
                     loopCoreZero,   /* função que implementa a tarefa */
@@ -35,8 +35,14 @@ void loopCoreZero(void * pvParameters ){
   
   while(true){
 
-    handleHttpRequest();
-    handleGetMyConf();
+    if(started){
+     
+      handleHttpRequest();
+      handleGetMyConf();
+      handleMeasure();
+      handleSendMeasure(); 
+    }
+    handleCommit();
   }
   
 }

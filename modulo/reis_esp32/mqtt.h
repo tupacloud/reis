@@ -20,6 +20,22 @@ void setMqtt();
 void connectMQTT();
 void callback_MQTT(char* topic, byte* payload, unsigned int length);
 void handleMqttPayload(String payload);
+void handleTop(JsonObject& root);
+void sendMeasureByMqtt();
+
+void sendMeasureByMqtt(){
+  
+}
+
+void handleTop(JsonObject& root){
+
+  String top = root["top"];
+
+  if( top.equals("getMeasure") ){
+
+    sendMeasureByMqtt();
+  }
+}
 
 void handleMqttPayload(String payload){
 
@@ -31,6 +47,11 @@ void handleMqttPayload(String payload){
   if(root.containsKey("own")){
     
     setOwn(root);  
+  }
+
+  if(root.containsKey("top")){
+    
+    handleTop(root);  
   }
 
   jsonBuffer.clear();

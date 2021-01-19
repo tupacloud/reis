@@ -190,22 +190,7 @@ boolean saveNotf(JsonArray& notf){
     EEPROM.write(pos - 1, size);
     NotfSize = size;
 
-    if(Notf!=NULL)
-    free(Notf);
-    Notf = (int*) calloc(NotfSize,sizeof(int));
-  
-    int notf[11];
-    readNotf(notf);
-  
-    int count = 0;
-    for(int i=0; i<11; i++){
-  
-      if( notf[i] == 1 ){
-  
-        Notf[count] = i * 10;
-        count ++;
-      }
-    }
+    updateNotf();
   }
 
   return taok;
@@ -242,6 +227,9 @@ void setOwn(JsonObject& root){
     writeString(CLIENT_ID_POSITION,clientID);
   }
 
+  setConf(root);
+
+  started = true;
 }
 
 void commitEEPROM(){
@@ -291,7 +279,9 @@ void writeString(int _add, String data){
     EEPROM.write(_add+i,data[i]);
   }
   EEPROM.write(_add+_size,'\0');   //Add termination null character for String Data
-  EEPROM.commit();
+  
+  //EEPROM.commit();
+  commitEEPROM();
 }
 
 String getClientID(){

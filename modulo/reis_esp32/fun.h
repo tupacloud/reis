@@ -2,17 +2,184 @@
 int getConfDelay = 3600000; // 1h em milisegundos
 long timeGetConf = - getConfDelay;
 
+int getMeasureDelay = 10000;
+long timeGetMeasure = - getMeasureDelay;
+
+long timeSendMeasure = - MeasureDelay;
+
 void handleGetMyConf();
 void getMyConf();
 void initModule();
+void handleMeasure();
+void getMeasure();
+float readUltrasonicDistance();
+void handleNotification();
+void sendNotification(int trigger, String status_);
+void handleSendMeasure();
+void sendMeasure();
 
-void initModule(){
+void sendMeasure(){
 
-  Recuo = readRecuo();
-  Hmax = readHmax();
-  MeasureDelay = readMeasureDelay();
+  String input_  = "{\"payload\":";
+         input_ += "{";
+         input_ += "\"mid\":";
+         input_ += "\"" + uniqueDeviceCode + "\"";
+         input_ += ",";
+         input_ += "\"cid\":";
+         input_ += "\"" + getClientID() + "\"";
+         input_ += ",";
+         input_ += "\"measure\":";
+         input_ += String(measure);
+         input_ += "}";
+         input_ += "}";
 
-  NotfSize = readNotfSize();
+  String flushID = "blablabla";
+
+  String flush_ = "?FLOW=" + flushID + "&INPUT=" + input_;
+
+  httpQueue.add_string((char *)flush_.c_str());
+
+  timeSendMeasure = millis();
+}
+
+void sendNotification(int trigger, String status_){
+  
+  String input_  = "{\"payload\":";
+         input_ += "{";
+         input_ += "\"mid\":";
+         input_ += "\"" + uniqueDeviceCode + "\"";
+         input_ += ",";
+         input_ += "\"cid\":";
+         input_ += "\"" + getClientID() + "\""; 
+         input_ += ",";
+         input_ += "\"trigger\":";
+         input_ += trigger;
+         input_ += ",";
+         input_ += "\"status\":";
+         input_ += "\"";
+         input_ += status_;
+         input_ += "\"";
+         input_ += "}";
+         input_ += "}";
+
+  String flushID = "blablabla";
+
+  String flush_ = "?FLOW=" + flushID + "&INPUT=" + input_;
+
+  httpQueue.add_string((char *)flush_.c_str());
+
+}
+
+void handleNotification(){
+  
+  for(int i=0; i<NotfSize; i++){
+
+    int trigger = Notf[i];
+
+    if( lastMeasure > trigger && measure < trigger ){
+
+      sendNotification(trigger, "descendo");
+      break;
+    }
+
+    if( lastMeasure < trigger && measure > trigger ){
+
+      sendNotification(trigger, "subindo");
+      break;
+    }
+  }
+}
+
+void handleSendMeasure(){
+  
+  long timeNow = millis();
+  if(timeNow - timeSendMeasure > MeasureDelay) sendMeasure();
+  delay(1); // alimenta o watchdog
+}
+
+float readUltrasonicDistance(){
+
+  // Clear the trigPin by setting it LOW:
+  digitalWrite(PIN_TRIGGER, LOW);
+  
+  delayMicroseconds(10);
+  // Trigger the sensor by setting the trigPin high for "triggerDelay" microseconds:
+  digitalWrite(PIN_TRIGGER, HIGH);
+  delayMicroseconds(triggerDelay);
+  digitalWrite(PIN_TRIGGER, LOW);
+  
+  // Read the echoPin. pulseIn() returns the duration (length of the pulse) in microseconds:
+  long duration = pulseIn(PIN_ECHO, HIGH);
+
+  // Calculate the distance:
+  float distance = duration * vsom / 2;
+
+  return distance;
+}
+
+void getMeasure(){
+
+  int N = 10;
+
+  int count_1 = 0;
+  int count_2 = 0;
+  int medidas[N];
+
+  do{
+
+    int dist = readUltrasonicDistance();
+    //Serial.println("Dist " + String(dist));
+
+    if(dist <= Recuo + Hmax&& dist >= Recuo){
+
+      medidas[count_1] =  dist;
+      count_1 ++;
+    }
+
+    count_2 ++;
+    delay(20);
+    
+  }while( count_1<N && count_2<2*N );
+
+  //Serial.println("Medidas coletadas. Count: " + String(count_1));
+
+  if(count_1 != 0){
+
+    if(count_1 < N){
+     
+     for(int i=count_1; i<N; i++){
+        medidas[i] = medidas[count_1-1];
+      } 
+    }
+
+    float soma = 0;
+    for(int i=0; i<N; i++){
+      soma += medidas[i];
+    }
+
+    float media = soma/N;
+
+    lastMeasure = measure; 
+    measure = media;
+
+    handleNotification();
+    
+    //Serial.println("Measure: " + String(measure) + "%" + " | " + String(media));
+  }
+
+  timeGetMeasure = millis();
+}
+
+void handleMeasure(){
+
+  long timeNow = millis();
+  if(timeNow - timeGetMeasure > getMeasureDelay) getMeasure();
+  delay(1); // alimenta o watchdog
+}
+
+void updateNotf(){
+
+   NotfSize = readNotfSize();
 
   if(Notf!=NULL)
   free(Notf);
@@ -29,6 +196,25 @@ void initModule(){
       Notf[count] = i * 10;
       count ++;
     }
+  }
+}
+
+void initModule(){
+
+  Recuo = readRecuo();
+  Hmax = readHmax();
+  MeasureDelay = readMeasureDelay();
+
+  updateNotf();
+
+  pinMode(PIN_TRIGGER, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+
+  String clientID = getClientID();
+
+  if( !clientID.equals(nullClientID) ){
+
+    started = true;
   }
 }
 
@@ -57,7 +243,7 @@ void getMyConf(){
          input_ += "\"" + uniqueDeviceCode + "\"";
          input_ += ",";
          input_ += "\"cid\":";
-         input_ += "\"" + uniqueDeviceCode + "\"";
+         input_ += "\"" + getClientID() + "\"";
          input_ += "}";
          input_ += "}";
 
@@ -65,5 +251,9 @@ void getMyConf(){
 
   String flush_ = "?FLOW=" + flushID + "&INPUT=" + input_;
 
+  httpQueue.add_string((char *)flush_.c_str());
+
   timeGetConf = millis();
 }
+
+//
