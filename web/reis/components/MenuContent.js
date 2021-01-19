@@ -2,7 +2,7 @@ app.component('menu-content', {
     template:
     /*html*/
     `
-        <div class="menu-item" v-on:click="clickEvent('main')">
+        <div class="menu-item" v-on:click="openWindow('main')">
             <i style="margin: 10px" class="fa fa-home"></i>
             <p style="margin: 10px">Página inicial</p>
         </div>
@@ -15,9 +15,10 @@ app.component('menu-content', {
             <p style="margin: 10px">Histórico de uso</p>
             <i style="margin: 10px; margin-left: auto; margin-right: 20px" class="fa fa-angle-right"></i>
         </div>
-        <div class="menu-item">
+        <div class="menu-item" v-on:click="clickEvent('settings')">
             <i style="margin: 10px" class="fa fa-sliders-h"></i>
             <p style="margin: 10px">Configurações</p>
+            <i style="margin: 10px; margin-left: auto; margin-right: 20px" class="fa fa-angle-right"></i>
         </div>
         <div class="menu-item">
             <i style="margin: 10px" class="fa fa-sign-out-alt"></i>
@@ -30,6 +31,9 @@ app.component('menu-content', {
         }
     },
     methods: {
+        openWindow(type) {
+            this.$emit('open-window', {type: type})
+        },
         clickEvent(item) {
             this.$emit('menu-click', item)
         }

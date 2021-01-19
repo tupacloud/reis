@@ -1,29 +1,43 @@
 app.component('dashboard-display', {
+    data() {
+        return {
+            minimize: null        
+        }
+    },
     props: {
         view: {
             type: String,
+            required: true
+        },
+        windows: {
+            type: Array,
+            required: true
+        },
+        isMovingWindow: {
+            type: Boolean,
             required: true
         }
     },
     template:
     /*html*/
     `
-    <div class="dashboard">
+    <dynamic-window 
+        :title="window.title" 
+        v-for="(window, key) in windows"  
+        @minimize="minimizeWindow">
 
-        <div class="nav-bar">
-            <div >
-            <transition name='changeview'>
-                <div style="margin: 10px" key=1 v-if="view == 'main'"><h4><b>Início</b></h4></div>
-                <div style="margin: 10px" key=2 v-else-if="view == 'history'"><h4><b>Histórico</b></h4></div>
-            </transition>
-            </div>
-        </div>
-        <transition name='fade'>
+        <div v-if="window.type == 'history'"><history-display :id="key" :type="window.scale"></history-display></div>
+        <div v-else-if="window.type == 'main'"><main-display></main-display></div>
+        <div v-else-if="window.type == 'settings'"><settings-display @change-wallpaper="changeWallpaper" :cat="window.cat"></settings-display></div>
 
-            <div key=1 v-if="view == 'main'"><main-display></main-display></div>
-            <div key=2 v-else-if="view == 'history'"><history-display></history-display></div>
-            </transition>
-
-    </div>
-    `
+    </dynamic-window>   
+    `,
+    methods: {
+        changeWallpaper(payload) {
+            this.$emit('change-wallpaper', payload)
+        },
+        minimizeWindow(info) {
+            this.$emit('minimize', info)
+        }
+    }
 })
