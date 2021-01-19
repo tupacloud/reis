@@ -9,9 +9,12 @@ void setup() {
   //resetModuleToFactory();
   /**/
   if( !checkDeviceEEPROM(uniqueDeviceCode) ){
-    initDeviceInServer(uniqueDeviceCode);
+    initDefaultDevice(uniqueDeviceCode);
   }
   /**/
+
+  initModule();
+  setMqtt();
 
   xTaskCreatePinnedToCore(
                     loopCoreZero,   /* função que implementa a tarefa */
@@ -31,8 +34,15 @@ void loop() {
 void loopCoreZero(void * pvParameters ){
   
   while(true){
-    
-    delay(1);
+
+    if(started){
+     
+      handleHttpRequest();
+      handleGetMyConf();
+      handleMeasure();
+      handleSendMeasure(); 
+    }
+    handleCommit();
   }
   
 }
